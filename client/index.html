@@ -1,0 +1,172 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+		<script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
+		<script type="text/javascript">
+			window.tailwind.config = {
+				darkMode: ['class'],
+				theme: {
+					extend: {
+						colors: {
+							border: 'hsl(var(--border))',
+							input: 'hsl(var(--input))',
+							ring: 'hsl(var(--ring))',
+							background: 'hsl(var(--background))',
+							foreground: 'hsl(var(--foreground))',
+							primary: {
+								DEFAULT: 'hsl(var(--primary))',
+								foreground: 'hsl(var(--primary-foreground))'
+							},
+							secondary: {
+								DEFAULT: 'hsl(var(--secondary))',
+								foreground: 'hsl(var(--secondary-foreground))'
+							},
+							destructive: {
+								DEFAULT: 'hsl(var(--destructive))',
+								foreground: 'hsl(var(--destructive-foreground))'
+							},
+							muted: {
+								DEFAULT: 'hsl(var(--muted))',
+								foreground: 'hsl(var(--muted-foreground))'
+							},
+							accent: {
+								DEFAULT: 'hsl(var(--accent))',
+								foreground: 'hsl(var(--accent-foreground))'
+							},
+							popover: {
+								DEFAULT: 'hsl(var(--popover))',
+								foreground: 'hsl(var(--popover-foreground))'
+							},
+							card: {
+								DEFAULT: 'hsl(var(--card))',
+								foreground: 'hsl(var(--card-foreground))'
+							},
+						},
+					}
+				}
+			}
+		</script>
+		<style type="text/tailwindcss">
+			@layer base {
+				:root {
+					--background: 0 0% 100%;
+--foreground: 240 10% 3.9%;
+--card: 0 0% 100%;
+--card-foreground: 240 10% 3.9%;
+--popover: 0 0% 100%;
+--popover-foreground: 240 10% 3.9%;
+--primary: 240 5.9% 10%;
+--primary-foreground: 0 0% 98%;
+--secondary: 240 4.8% 95.9%;
+--secondary-foreground: 240 5.9% 10%;
+--muted: 240 4.8% 95.9%;
+--muted-foreground: 240 3.8% 46.1%;
+--accent: 240 4.8% 95.9%;
+--accent-foreground: 240 5.9% 10%;
+--destructive: 0 84.2% 60.2%;
+--destructive-foreground: 0 0% 98%;
+--border: 240 5.9% 90%;
+--input: 240 5.9% 90%;
+--ring: 240 5.9% 10%;
+--radius: 0.5rem;
+				}
+				.dark {
+					--background: 240 10% 3.9%;
+--foreground: 0 0% 98%;
+--card: 240 10% 3.9%;
+--card-foreground: 0 0% 98%;
+--popover: 240 10% 3.9%;
+--popover-foreground: 0 0% 98%;
+--primary: 0 0% 98%;
+--primary-foreground: 240 5.9% 10%;
+--secondary: 240 3.7% 15.9%;
+--secondary-foreground: 0 0% 98%;
+--muted: 240 3.7% 15.9%;
+--muted-foreground: 240 5% 64.9%;
+--accent: 240 3.7% 15.9%;
+--accent-foreground: 0 0% 98%;
+--destructive: 0 62.8% 30.6%;
+--destructive-foreground: 0 0% 98%;
+--border: 240 3.7% 15.9%;
+--input: 240 3.7% 15.9%;
+--ring: 240 4.9% 83.9%;
+				}
+			}
+		</style>
+  </head>
+  <body>
+    <div class="min-h-screen flex flex-col items-center justify-center bg-background text-foreground p-4">
+  <div class="max-w-4xl w-full">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold">Welcome to Flexibility.AI</h1>
+      <p class="text-muted-foreground">Type a text of at least 300 words to level it off. </p>
+    </div>
+    <div class="flex flex-col md:flex-row gap-8">
+      <div class="flex-1">
+        <textarea id="main-textarea" class="w-full h-64 p-4 border border-border rounded-md bg-input text-foreground" maxlength="2000" placeholder="Enter your text here..."></textarea>
+        <div class="text-right text-muted-foreground mt-2">
+          <span id="word-counter">0</span>/2000
+        </div>
+      </div>
+      <div class="flex-1 space-y-4">
+        <select id="select-option-1" class="w-full p-4 border border-border rounded-md bg-input text-foreground">
+          <option value="" disabled selected>Select Reading Level</option>
+          <option value="8th">8th</option>
+          <option value="6th">6th</option>
+          <option value="4th">4th</option>
+        </select>
+        <select id="select-option-2" class="w-full p-4 border border-border rounded-md bg-input text-foreground">
+          <option value="" disabled selected>Special Need</option>
+          <option value="Dyslexia">Dyslexia</option>
+          <option value="Color blindness">Color blindness</option>
+          <option value="Low vision">Low vision</option>
+          <option value="None">None</option>
+        </select>
+        <select id="select-option-3" class="w-full p-4 border border-border rounded-md bg-input text-foreground">
+          <option value="" disabled selected>Select the Font</option>
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+          <option value="option3">Option 3</option>
+        </select>
+        <textarea class="w-full h-32 p-4 border border-border rounded-md bg-input text-foreground" maxlength="150" placeholder="Enter other requests..."></textarea>
+        <button id="submit-button" class="w-full p-4 bg-primary text-primary-foreground rounded-md hover:bg-primary/80 mt-4">Submit</button>
+        <div id="error-message" style= "color: brown;" class="text-destructive-foreground mt-2 hidden">Please ensure the main text area has at least 1800 characters and at least one option is selected.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const textarea = document.getElementById('main-textarea');
+  const wordCounter = document.getElementById('word-counter');
+  const submitButton = document.getElementById('submit-button');
+  const errorMessage = document.getElementById('error-message');
+  const selectOption1 = document.getElementById('select-option-1');
+  const selectOption2 = document.getElementById('select-option-2');
+  const selectOption3 = document.getElementById('select-option-3');
+  textarea.addEventListener('input', () => {
+    wordCounter.textContent = textarea.value.length;
+  });
+  submitButton.addEventListener('click', () => {
+    const textLength = textarea.value.length;
+    const option1Selected = selectOption1.value !== "";
+    const option2Selected = selectOption2.value !== "";
+    const option3Selected = selectOption3.value !== "";
+    if (textLength < 1800 || (!option1Selected && !option2Selected && !option3Selected)) {
+      errorMessage.classList.remove('hidden');
+    } else {
+      errorMessage.classList.add('hidden');
+      // Add your form submission logic here
+      
+      localStorage.setItem("inputValue", textarea.value);
+      localStorage.setItem('readability', selectOption1.value)
+      localStorage.setItem('special_need', selectOption2.value)
+      window.location.href = '/logic/' 
+    }
+  });
+</script>
+
+  </body>
+</html>
