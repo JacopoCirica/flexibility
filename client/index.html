@@ -46,6 +46,7 @@
 								DEFAULT: 'hsl(var(--card))',
 								foreground: 'hsl(var(--card-foreground))'
 							},
+							customBlue: '#2563eb'
 						},
 					}
 				}
@@ -134,7 +135,7 @@
           <option value="option3">Option 3</option>
         </select>
         <textarea class="w-full h-32 p-4 border border-border rounded-md bg-input text-foreground" maxlength="150" placeholder="Enter other requests..."></textarea>
-        <button id="submit-button" class="w-full p-4 bg-primary text-primary-foreground rounded-md hover:bg-primary/80 mt-4">Submit</button>
+        <button id="submit-button" class="w-full p-4 bg-customBlue text-primary-foreground rounded-md hover:bg-customBlue/80 mt-4">Submit</button>
         <div id="error-message" style= "color: brown;" class="text-destructive-foreground mt-2 hidden">Please ensure the main text area has at least 1800 characters and at least one option is selected.</div>
       </div>
     </div>
