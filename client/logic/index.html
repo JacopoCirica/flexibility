@@ -2,13 +2,19 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
 		<script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 		<script type="text/javascript">
 			window.tailwind.config = {
 				darkMode: ['class'],
 				theme: {
-					extend: {
+					extend: {fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
 						colors: {
 							border: 'hsl(var(--border))',
 							input: 'hsl(var(--input))',
@@ -53,87 +59,113 @@
 			@layer base {
 				:root {
 					--background: 0 0% 100%;
---foreground: 222.2 84% 4.9%;
---card: 0 0% 100%;
---card-foreground: 222.2 84% 4.9%;
---popover: 0 0% 100%;
---popover-foreground: 222.2 84% 4.9%;
---primary: 222.2 47.4% 11.2%;
---primary-foreground: 210 40% 98%;
---secondary: 210 40% 96.1%;
---secondary-foreground: 222.2 47.4% 11.2%;
---muted: 210 40% 96.1%;
---muted-foreground: 215.4 16.3% 46.9%;
---accent: 210 40% 96.1%;
---accent-foreground: 222.2 47.4% 11.2%;
---destructive: 0 84.2% 60.2%;
---destructive-foreground: 210 40% 98%;
---border: 214.3 31.8% 91.4%;
---input: 214.3 31.8% 91.4%;
---ring: 222.2 84% 4.9%;
---radius: 0.5rem;
+					--foreground: 222.2 84% 4.9%;
+					--card: 0 0% 100%;
+					--card-foreground: 222.2 84% 4.9%;
+					--popover: 0 0% 100%;
+					--popover-foreground: 222.2 84% 4.9%;
+					--primary: 222.2 47.4% 11.2%;
+					--primary-foreground: 210 40% 98%;
+					--secondary: 210 40% 96.1%;
+					--secondary-foreground: 222.2 47.4% 11.2%;
+					--muted: 210 40% 96.1%;
+					--muted-foreground: 215.4 16.3% 46.9%;
+					--accent: 210 40% 96.1%;
+					--accent-foreground: 222.2 47.4% 11.2%;
+					--destructive: 0 84.2% 60.2%;
+					--destructive-foreground: 210 40% 98%;
+					--border: 214.3 31.8% 91.4%;
+					--input: 214.3 31.8% 91.4%;
+					--ring: 222.2 84% 4.9%;
+					--radius: 0.5rem;
 				}
 				.dark {
 					--background: 222.2 84% 4.9%;
---foreground: 210 40% 98%;
---card: 222.2 84% 4.9%;
---card-foreground: 210 40% 98%;
---popover: 222.2 84% 4.9%;
---popover-foreground: 210 40% 98%;
---primary: 210 40% 98%;
---primary-foreground: 222.2 47.4% 11.2%;
---secondary: 217.2 32.6% 17.5%;
---secondary-foreground: 210 40% 98%;
---muted: 217.2 32.6% 17.5%;
---muted-foreground: 215 20.2% 65.1%;
---accent: 217.2 32.6% 17.5%;
---accent-foreground: 210 40% 98%;
---destructive: 0 62.8% 30.6%;
---destructive-foreground: 210 40% 98%;
---border: 217.2 32.6% 17.5%;
---input: 217.2 32.6% 17.5%;
---ring: 212.7 26.8% 83.9;
-
+					--foreground: 210 40% 98%;
+					--card: 222.2 84% 4.9%;
+					--card-foreground: 210 40% 98%;
+					--popover: 222.2 84% 4.9%;
+					--popover-foreground: 210 40% 98%;
+					--primary: 210 40% 98%;
+					--primary-foreground: 222.2 47.4% 11.2%;
+					--secondary: 217.2 32.6% 17.5%;
+					--secondary-foreground: 210 40% 98%;
+					--muted: 217.2 32.6% 17.5%;
+					--muted-foreground: 215 20.2% 65.1%;
+					--accent: 217.2 32.6% 17.5%;
+					--accent-foreground: 210 40% 98%;
+					--destructive: 0 62.8% 30.6%;
+					--destructive-foreground: 210 40% 98%;
+					--border: 217.2 32.6% 17.5%;
+					--input: 217.2 32.6% 17.5%;
+					--ring: 212.7 26.8% 83.9;
 				}
 			}
 		</style>
   </head>
   <body>
-    
-
-<div class="flex h-screen bg-zinc-100 dark:bg-zinc-900 p-4">
-  <div class="w-1/2 bg-card p-4 flex flex-col rounded-lg border border-border shadow-lg">
-    <div id="chat_container" class="flex-1 overflow-y-auto">
-      <div id="first-message" class="bg-secondary text-secondary-foreground p-2 rounded mb-2">Hello! We are regenerating your text according to your instructions <br><br> Please do not hesitate to ask me for further modifications or questions.</div>
-      
-    </div>
-    <div class="mt-4 flex">
-      <input id="prompt" type="text" placeholder="Ask for changes to the current formatting..." class="flex-1 p-2 border border-input rounded-l bg-background text-foreground" />
-      <button id="submit_button" class="bg-customBlue/80 text-primary-foreground p-2 rounded-r hover:bg-customBlue">Send</button>
-	  <button id= "downloadButton" class="bg-accent text-accent-foreground p-2 ml-2 rounded-full hover:bg-accent/80">
-        <img aria-hidden="true" alt="download the HTML version" src="https://openui.fly.dev/openui/24x24.svg?text=⬇️" />
+	<!--new version Kushas-->
+    <div class="flex justify-end p-4 bg-zinc-100 dark:bg-zinc-900">
+      <button id="settingsButton" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center">
+        <img aria-hidden="true" alt="settings-icon" src="https://openui.fly.dev/openui/24x24.svg?text=⚙️" />
       </button>
     </div>
-  </div>
-  <div class="w-1/2 relative ml-4 bg-card rounded-lg border border-border shadow-lg">
-    <iframe id="output" class="w-full h-full border-none rounded-lg" src="about:blank">
-	</iframe>
-    <div class="absolute top-4 right-4 flex space-x-2">
-      <button class="bg-accent text-accent-foreground p-2 rounded-full hover:bg-accent/80">
-        <img aria-hidden="true" id= "left_arrow" alt="left-arrow" src="https://openui.fly.dev/openui/24x24.svg?text=⬅️" />
-      </button>
-      <button class="bg-accent text-accent-foreground p-2 rounded-full hover:bg-accent/80">
-        <img aria-hidden="true" id= "right_arrow" alt="right-arrow" src="https://openui.fly.dev/openui/24x24.svg?text=➡️" />
-      </button>
+	<div id="settingsPopup" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+		<div class="bg-card p-6 rounded-lg shadow-lg max-w-md w-full">
+			<h2 class="text-xl font-semibold mb-4">Settings</h2>
+			<p class="text-muted-foreground mb-4">Prompt used for the LLM:</p>
+			<textarea class="border border-border rounded-lg p-2 w-full" rows="4">
+Modify the formatting and design according to this user request.
+
+Keep the division into four paragraphs and a length of approximately 450 words. Then, the output should be in html format only. The text must appear as if it were in a Word document. Therefore, also include a &lt;style&gt; tag. The output MUST always begin with '&lt;!DOCTYPE html&gt;' and end with '&lt;/html&gt;'. Do not insert any '``` html' separator.
+			</textarea>
+			<h3 class="text-lg font-semibold mt-4">Additional Settings</h3>
+			<p class="text-muted-foreground mb-2">Adjust font size, background color, etc.</p>
+			<button id="closePopup" class="bg-destructive text-destructive-foreground p-2 rounded-lg mt-4">Close</button>
+		</div>
+	</div>
+	<!--new version Kushas-->
+    <div class="flex h-screen bg-zinc-100 dark:bg-zinc-900 p-4">
+      <div class="w-1/2 bg-card p-4 flex flex-col rounded-lg border border-border shadow-lg">
+        <div id="chat_container" class="flex-1 overflow-y-auto">
+          <div id="first-message" class="bg-secondary text-secondary-foreground p-2 rounded mb-2">
+            Hello! We are regenerating your text according to your instructions <br><br>
+            Please do not hesitate to ask me for further modifications or questions.
+          </div>
+        </div>
+        <div class="mt-4 flex">
+          <input id="prompt" type="text" placeholder="Ask for changes to the current formatting..." class="flex-1 p-2 border border-input rounded-l bg-background text-foreground" />
+          <button id="submit_button" class="bg-customBlue text-primary-foreground p-2 rounded-r">Send</button>
+          <button id="downloadButton" class="bg-accent text-accent-foreground p-2 ml-2 rounded-full hover:bg-accent/80">
+            <img aria-hidden="true" alt="download the HTML version" src="https://openui.fly.dev/openui/24x24.svg?text=⬇️" />
+          </button>
+        </div>
+      </div>
+      <div class="w-1/2 relative ml-4 bg-card rounded-lg border border-border shadow-lg">
+        <iframe id="output" class="w-full h-full border-none rounded-lg" src="about:blank"></iframe>
+        <div class="absolute top-4 right-4 flex space-x-2">
+          <button class="bg-accent text-accent-foreground p-2 rounded-full hover:bg-accent/80">
+            <img aria-hidden="true" id="left_arrow" alt="left-arrow" src="https://openui.fly.dev/openui/24x24.svg?text=⬅️" />
+          </button>
+          <button class="bg-accent text-accent-foreground p-2 rounded-full hover:bg-accent/80">
+            <img aria-hidden="true" id="right_arrow" alt="right-arrow" src="https://openui.fly.dev/openui/24x24.svg?text=➡️" />
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-<script type="module" src="/logic/script.js"></script>
-<script>
-    
-</script>
-
-
-
+    <script type="module" src="/logic/script.js"></script>
+    <!--new version Kushas-->
+	<script>
+    const settingsButton = document.getElementById('settingsButton');
+    const settingsPopup = document.getElementById('settingsPopup');
+    const closePopup = document.getElementById('closePopup');
+    settingsButton.addEventListener('click', () => {
+        settingsPopup.classList.toggle('hidden');
+    });
+    closePopup.addEventListener('click', () => {
+        settingsPopup.classList.add('hidden');
+    });
+    </script>
+	<!--new version Kushas-->
   </body>
 </html>
