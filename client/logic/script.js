@@ -1,13 +1,16 @@
 import OpenAI from "openai";
 
-console.log(import.meta.env.VITE_OPENAI_API_KEY)
+
 const openai= new OpenAI({
         apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-        dangerouslyAllowBrowser: true ,
- });
+        dangerouslyAllowBrowser: true
+    });
 
 
 var list_messages=[]
+/*new version Kushas*/
+var first_message= ""
+/*new version Kushas*/
 var index= 0
 var readability = localStorage.getItem("readability")
 var special_need = localStorage.getItem("special_need")
@@ -95,11 +98,47 @@ window.onload = async function(){
         presence_penalty: 0,
       });
       response=response.choices[0].message.content
-      output.contentDocument.body.innerHTML = response
+      /*new version Kushas */
+      first_message=response
+      //output.contentDocument.body.innerHTML = response
+      /*new version Kushas*/
       list_messages.push(response)
       console.log(readability)
-      console.log(`You are an helpful coding assistant. Given a text, perform the following tasks. Let's start by rewriting the text and reducing the readability level to grade ${readability} according to the Flesch-Kincaid Grade Level. It also adapts the text to a reader with this disability: ${special_need}. Keep the division into four paragraphs and a length of approximately 450 words.Then, the output must be in html format only. The text must appear as if it were in a Word document. Therefore, also include a <style> tag. The output should always begins with '<!DOCTYPE html>' and ends up with '</html>'.`)
-    
+      //console.log(`You are an helpful coding assistant. Given a text, perform the following tasks. Let's start by rewriting the text and reducing the readability level to grade ${readability} according to the Flesch-Kincaid Grade Level. It also adapts the text to a reader with this disability: ${special_need}. Keep the division into four paragraphs and a length of approximately 450 words.Then, the output must be in html format only. The text must appear as if it were in a Word document. Therefore, also include a <style> tag. The output should always begins with '<!DOCTYPE html>' and ends up with '</html>'.`)
+      /*new version Kushas */
+      var response_first = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo-1106",
+        messages: [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "You are an helpful formatting and design assistant. Your role is to  explain the choices in design and format in the new version of text, considering the user's request. "
+              }
+            ]
+          },
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": `Here the original text: ${localStorage.getItem("inputValue")}. \n\n Here the re-generated text that was formatted too: ${first_message}\n\n Here the desired readability: ${readability} and special need: ${special_need} \n\nExplain the differences and why the modified version is better for the user's request in terms of format and readability..`
+              }
+            ]
+          }
+        ],
+        temperature: 1,
+        max_tokens: 256,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+      });
+      response_first=response_first.choices[0].message.content
+      chatContainer.innerHTML += `
+      <div class="bg-secondary text-secondary-foreground p-2 rounded mb-2">${response_first}</div>`
+      output.contentDocument.body.innerHTML = response
+      /*new version Kushas */
     
 };
 
@@ -160,8 +199,10 @@ btn.onclick = async function() {
             "content": [
                 {
                     "type": "text",
-                    "text": `Given this html file: ${previous_content}\n\n Modify the formatting and design according to this user request: ${text}.\n\nKeep the division into four paragraphs and a length of approximately 450 words.Then, the output should be in html format only. The text must appear as if it were in a Word document. Therefore, also include a <style> tag. The output MUST always begins with '<!DOCTYPE html>' and ends up with '</html>'. Not insert any '\`\`\` html' separetor. `
-                }
+                    /*new version Kushas */
+                    "text": `Given this html file: ${previous_content}\n\nAnd user request: ${text}\n\n${document.querySelector('textarea').value}`
+                    /*new version Kushas */
+                  }
             ]
         }],
         temperature: 1,
